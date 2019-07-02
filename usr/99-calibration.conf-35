@@ -1,0 +1,36 @@
+# This is the file "99-calibration.conf-35" that the script "LCD35-show" is supposed to copy onto (i.e. overwrite with) /etc/X11/xorg.conf.d/99-calibration.conf on a Raspberry Pi. Don't use the one in https://github.com/goodtft/LCD-show/tree/master/usr/. 
+
+# Use this file for Raspbian 9.8 Stretch. Might not work with older or newer versions of Raspbian!
+
+Section "InputClass"
+        Identifier      "calibration"
+        MatchProduct    "ADS7846 Touchscreen"
+        Option  "Calibration"   "3936 227 268 3880"
+        Option  "SwapAxes"      "1"
+        # Hat trick to get the pen to work properly on the touch screen:
+        Option "TransformationMatrix" "0 -1 1 1 0 0 0 0 1"
+EndSection
+
+Section "Device" 
+   # WaveShare SpotPear 3.5", framebuffer 1
+   Identifier "uga" 
+   driver "fbdev" 
+   Option "fbdev" "/dev/fb1" 
+   Option "ShadowFB" "off"
+EndSection 
+
+Section "Monitor" 
+   # Primary monitor. WaveShare SpotPear 480x320
+   Identifier "WSSP" 
+EndSection 
+
+Section "Screen" 
+   Identifier "primary" 
+   Device "uga" 
+   Monitor "WSSP" 
+EndSection 
+
+Section "ServerLayout" 
+   Identifier "default" 
+   Screen 0 "primary" 0 0 
+EndSection

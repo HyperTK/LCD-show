@@ -1,0 +1,26 @@
+#!/bin/bash
+# This is a modified "LCD-hdmi" script to replace the one in https://github.com/goodtft/LCD-show. Use this script for Raspbian 9.8 Stretch. Might not work with older or newer versions of Raspbian!
+
+sudo rm -rf /usr/share/X11/xorg.conf.d/99-fbturbo.conf 
+sudo rm -rf /etc/X11/xorg.conf.d/99-calibration.conf
+
+# Michel: if you ever used the unmoidified "LCD-hdmi" script from https://github.com/goodtft/LCD-show remove the /etc/modules file it created.
+# sudo rm -rf /etc/modules
+# Make a new file yourself called "/etc/modules" with (only) the following contents:
+#   i2c-dev
+
+# Michel: the two lines below cause your desktop environment not to be started: 
+# sudo cp -rf ./usr/modules-HDMI  /etc/modules
+# sudo cp -rf ./usr/99-fbturbo.conf-HDMI  /usr/share/X11/xorg.conf.d/99-fbturbo.conf
+
+sudo cp ./boot/config-nomal.txt /boot/config.txt
+
+if [ -b /dev/mmcblk0p7 ]
+   then
+      sudo cp ./usr/cmdline.txt-noobs /boot/cmdline.txt
+   else
+      sudo cp ./usr/cmdline.txt /boot/
+fi
+
+sudo cp ./usr/inittab /etc/
+sudo reboot
